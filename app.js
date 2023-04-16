@@ -2,8 +2,9 @@ require("dotenv").config();
 require("express-async-errors");
 
 const express = require("express");
+const fileUpload = require("express-fileupload");
 const app = express();
-
+console.log(__dirname)
 // database
 const connectDB = require("./db/connect");
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(express.json());
+app.use(fileUpload());
 
 app.use("/api/v1/products", productRouter);
 // middleware
@@ -26,7 +28,7 @@ app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000;
- 
+
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);

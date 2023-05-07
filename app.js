@@ -4,7 +4,7 @@ require("express-async-errors");
 const express = require("express");
 const fileUpload = require("express-fileupload");
 const app = express();
-console.log(__dirname)
+console.log(__dirname);
 // database
 const connectDB = require("./db/connect");
 
@@ -19,9 +19,9 @@ app.get("/", (req, res) => {
   res.send("<h1>File Upload Starter</h1>");
 });
 
-app.use(express.static('./public'))
+app.use(express.static("./public"));
 app.use(express.json());
-app.use(fileUpload());
+app.use(fileUpload({ useTempFiles: true }));
 
 app.use("/api/v1/products", productRouter);
 // middleware

@@ -10,7 +10,7 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-const uploadProductImage = async (req, res) => {
+const uploadProductImageLocal = async (req, res) => {
   let productImage = req.files.image;
 
   // do some validation on the product image
@@ -44,20 +44,24 @@ const uploadProductImage = async (req, res) => {
       src: `/uploads/${productImage.name}`,
     },
   });
+};
 
-  const cloudinary_response = cloudinary.uploader.upload(
-    `./public/uploads/${productImage.name}`, {public_id: "a computer"}
+const uploadProductImage = async (req, res) => {
+  console.log(req.files.image.tempFilePath); // once tempFiles is turned on, this object value from expressFileUpload populates
+  const result = await cloudinary.uploader.upload(
+    req.files.image.tempFilePath,
+    {
+      use_filename: true,
+      folder: "file-upload",
+    },
   );
 
-  cloudinary_response
-    .then((data) => {
-      console.log(data);
-      console.log(data.secure_url);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(StatusCodes.BAD_REQUEST).send(err);
-    });
+  console.log(result);
+  res.status(StatusCodes.OK).send({
+    image: {
+      src: result.secure_url,
+    },
+  });
 };
 
 module.exports = {

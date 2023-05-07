@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
   res.send("<h1>File Upload Starter</h1>");
 });
 
+app.use(express.static('./public'))
 app.use(express.json());
 app.use(fileUpload());
 

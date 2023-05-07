@@ -18,7 +18,7 @@ let imageValue;
 
 
 
-
+// as soon as file is added to the DOM, upload file hen deconstruct res for image link
 imageInputDOM.addEventListener('change',async (e)=>{
  const imageFile = e.target.files[0];
  const formData = new FormData();
@@ -36,7 +36,7 @@ imageInputDOM.addEventListener('change',async (e)=>{
  }
 })
 
-
+// this call sends the formData
 fileFormDOM.addEventListener('submit',async (e)=>{
 e.preventDefault()
 const nameValue = nameInputDOM.value;

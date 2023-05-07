@@ -1,6 +1,14 @@
 const path = require("path");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
+const cloudinary = require("cloudinary").v2;
+
+// cloudinary config
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 const uploadProductImage = async (req, res) => {
   let productImage = req.files.image;
@@ -36,6 +44,20 @@ const uploadProductImage = async (req, res) => {
       src: `/uploads/${productImage.name}`,
     },
   });
+
+  const cloudinary_response = cloudinary.uploader.upload(
+    `./public/uploads/${productImage.name}`, {public_id: "a computer"}
+  );
+
+  cloudinary_response
+    .then((data) => {
+      console.log(data);
+      console.log(data.secure_url);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(StatusCodes.BAD_REQUEST).send(err);
+    });
 };
 
 module.exports = {
